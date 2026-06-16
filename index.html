@@ -1,21 +1,86 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat App</title>
-    <!-- Core React 18 CDN Framework Engines -->
+
+<meta charset="UTF-8">
+
+<--
+
+<meta name="viewport" content="width=device-w
+
+<title>AI Chat App</title>
+
     <script src="https://unpkg.com/react@18/umd/react.developm ent.js"" crossorigin></script>
     <script src="https://unpkg.com/react- dom@18/umd/react-dom.development.js" crossorigin></script>
-    <!-- Live Standalone Browser Compiler -->
+
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
-    <!-- Added main tag to satisfy the document landmark layout rule -->
     <main>
         <div id="root"></div>
     </main>
-    <!-- Point exactly to your unflattened script path -->
-    <script type="text/babel" src="/src/App.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [messages, setMessages] = useState([]);
+            const [input, setInput] = useState('');
+
+            const sendMessage = async () => {
+                if (!input.trim()) return;
+                const userMsg = { role: 'user', content: input };
+                setMessages([...messages, userMsg]);
+                setInput('');
+
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: input })
+                    });
+                    const data = await response.json();
+                    setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+                } catch (error) {
+                    console.error("Error communicating with backend:", error);
+                }
+            };
+
+            return (
+                <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '600px', margin: '0 auto', color: '#333333' }}>
+                    <h2 style={{ color: '#007acc' }}>AI Chat Assistant</h2>
+                    <div style={{ border: '1px solid #ccc', height: '300px', overflowY: 'scroll', padding: '10px', marginBottom: '10px', backgroundColor: '#ffffff', borderRadius: '8px' }}>
+                        {messages.length === 0 ? (
+                            <p style={{ color: '#999', textAlign: 'center', marginTop: '120px' }}>No messages yet. Say hello!</p>
+                        ) : (
+                            messages.map((msg, i) => (
+                                <p key={i} style={{ textAlign: msg.role === 'user' ? 'right' : 'left', margin: '10px 0' }}>
+                                    <span style={{ backgroundColor: msg.role === 'user' ? '#d1e7dd' : '#e2e3e5', padding: '6px 12px', borderRadius: '12px', display: 'inline-block' }}>
+                                        <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong> {msg.content}
+                                    </span>
+                                </p>
+                            ))
+                        )}
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <input 
+                            type="text" 
+                            value={input} 
+                            onChange={(e) => setInput(e.target.value)} 
+                            style={{ flex: 1, padding: '12px', borderRadius: '6px', border: '1px solid #ccc' }} 
+                            placeholder="Type a message..."
+                        />
+                        <button onClick={sendMessage} style={{ padding: '12px 24px', backgroundColor: '#007acc', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Send</button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Mount the React component directly onto the HTML layout canvas
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
 </body>
 </html>
