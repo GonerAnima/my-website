@@ -5,6 +5,10 @@
       "use": "@vercel/python"
     },
     {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "frontend-src-*",
       "use": "@vercel/static"
     }
@@ -16,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "frontend-src-main.js"
+      "dest": "index.html"
     }
   ]
 }
