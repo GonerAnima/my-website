@@ -1,7 +1,4 @@
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "sonner";
-import Crucible from "@/components/Crucible";
+const { useState, useEffect, useRef } = React;
 
 function App() {
     return (
