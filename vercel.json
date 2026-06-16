@@ -5,7 +5,7 @@
       "use": "@vercel/python"
     },
     {
-      "src": "frontend-src-App.js",
+      "src": "frontend-src-*",
       "use": "@vercel/static"
     }
   ],
@@ -16,18 +16,3 @@
     }
   ]
 }
-{
-  "builds": [
-    {
-      "src": "Backend-server.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "Backend-server.py"
-    }
-  ]
-}
-
