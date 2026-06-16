@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My App</title>
+    <!-- Core React Engines -->
     <script src="https://unpkg.com" crossorigin></script>
     <script src="https://unpkg.com" crossorigin></script>
+    <!-- Browser Compiler -->
+    <script src="https://unpkg.com"></script>
+    <!-- Global HTTP Library (Axios) -->
     <script src="https://unpkg.com"></script>
 </head>
 <body>
     <div id="root"></div>
-    <!-- Added defer so the script executes after the root element exists -->
-    <script type="text/babel" defer src="frontend-src-App.js"></script>
+    <script type="text/babel" src="frontend-src-App.js"></script>
 </body>
 </html>
