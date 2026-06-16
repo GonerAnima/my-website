@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --c-bg: 270 30% 4%;
+    --c-surface: 270 25% 8%;
+    --c-purple: 280 85% 60%;
+    --c-magenta: 320 80% 55%;
+    --c-cyan: 180 80% 50%;
+    --c-text: 270 10% 90%;
+    --c-muted: 270 10% 55%;
+    --c-error: 0 80% 55%;
+    --color-primary-purple: hsl(280 85% 60%);
+    --color-magenta-accent: hsl(320 80% 55%);
+    --color-cyan-accent: hsl(180 80% 50%);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    margin: 0;
+    background: hsl(var(--c-bg));
+    color: hsl(var(--c-text));
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', 'Courier New', monospace;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* shadcn token compatibility (in case any imported ui uses them) */
+@layer base {
+    :root {
+        --background: 270 30% 4%;
+        --foreground: 270 10% 90%;
+        --card: 270 25% 8%;
+        --card-foreground: 270 10% 90%;
+        --popover: 270 25% 8%;
+        --popover-foreground: 270 10% 90%;
+        --primary: 280 85% 60%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 270 25% 14%;
+        --secondary-foreground: 270 10% 90%;
+        --muted: 270 25% 14%;
+        --muted-foreground: 270 10% 55%;
+        --accent: 320 80% 55%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 80% 55%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 280 50% 20%;
+        --input: 280 50% 20%;
+        --ring: 280 85% 60%;
+        --radius: 0.25rem;
+    }
+}
+
+/* Prismatic background */
+.prismatic-bg {
+    background-color: hsl(var(--c-bg));
+    background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, hsla(280, 85%, 30%, 0.55), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 90% 110%, hsla(320, 80%, 30%, 0.25), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 0% 100%, hsla(180, 80%, 25%, 0.18), transparent 70%);
+}
+
+.prismatic-halo {
+    background: radial-gradient(circle at 50% 50%,
+        hsla(280, 85%, 60%, 0.35) 0%,
+        hsla(320, 80%, 55%, 0.20) 30%,
+        hsla(180, 80%, 50%, 0.08) 55%,
+        transparent 75%);
+}
+
+/* Scanline overlay */
+.scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(157, 76, 221, 0.06) 2px,
+        rgba(157, 76, 221, 0.06) 3px
+    );
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+/* Idle float */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Pulse for halo */
+@keyframes halo-pulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+.animate-halo {
+    animation: halo-pulse 6s ease-in-out infinite;
+}
+
+/* Glitch animations */
+@keyframes glitch-x {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2px, 1px); }
+    20% { transform: translate(2px, -1px); }
+    30% { transform: translate(-1px, 2px); }
+    40% { transform: translate(1px, -2px); }
+    50% { transform: translate(-2px, 0); }
+    60% { transform: translate(2px, 1px); }
+    70% { transform: translate(0, -2px); }
+    80% { transform: translate(-1px, 1px); }
+    90% { transform: translate(1px, 0); }
+}
+@keyframes glitch-color {
+    0%, 100% { filter: hue-rotate(0deg) contrast(120%) saturate(120%); }
+    50% { filter: hue-rotate(20deg) contrast(140%) saturate(150%); }
+}
+
+.glitching {
+    animation: glitch-x 0.18s steps(2) infinite, glitch-color 0.4s ease-in-out infinite;
+}
+
+.glitch-text {
+    position: relative;
+    text-shadow:
+        2px 0 hsl(var(--c-magenta)),
+        -2px 0 hsl(var(--c-cyan));
+    animation: glitch-x 0.2s steps(2) infinite;
+}
+
+@keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+.terminal-cursor::after {
+    content: '_';
+    margin-left: 2px;
+    animation: cursor-blink 1s steps(2) infinite;
+    color: hsl(var(--c-purple));
+}
+
+/* Segmented bar */
+.seg {
+    height: 0.5rem;
+    flex: 1;
+    border: 1px solid hsla(280, 85%, 60%, 0.30);
+    background: hsla(280, 85%, 60%, 0.06);
+    transition: all 0.3s ease;
+}
+.seg.on {
+    background: hsl(var(--c-purple));
+    box-shadow: 0 0 12px hsla(280, 85%, 60%, 0.7);
+    border-color: hsl(var(--c-purple));
+}
+.seg.user-on {
+    background: hsl(var(--c-cyan));
+    box-shadow: 0 0 12px hsla(180, 80%, 50%, 0.7);
+    border-color: hsl(var(--c-cyan));
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsla(280, 85%, 60%, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsla(280, 85%, 60%, 0.6); }
+
+/* Selection */
+::selection { background: hsla(280, 85%, 60%, 0.45); color: white; }
+
+/* Hide visual edits wrapper margin clash */
+@layer base {
+    [data-debug-wrapper="true"] { display: contents !important; }
+}
