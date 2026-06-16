@@ -22,7 +22,8 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017/backup')
 
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ.get('DB_NAME', 'backup_db')]
+
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
